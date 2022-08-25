@@ -90,41 +90,58 @@ class _BodyState extends State<Body> {
           ),
           DataTable(
             columnSpacing: 0,
+            headingRowHeight: 40,
+            dataRowHeight: 40,
+            headingRowColor: MaterialStateProperty.resolveWith<Color?>((states) => Colors.grey[300]),
             columns: [
               DataColumn(
                 label: SizedBox(width: width * 0.1, child: const Text("No.")),
                 onSort: (columnIndex, ascending) {
-                  if (_tableSortIndex != columnIndex) {
-                    _tableSortIndex = 0;
-                    _isAscending = false;
-                  } else {
-                    _isAscending = !_isAscending;
-                  }
-
+                  _changeTableIndex(0);
                   samples = _isAscending ? SubjectData.sortByNo(samples) : SubjectData.sortByNo(samples).reversed.toList();
                   setState(() {});
-
-                  print(samples[0].no);
                 },
               ),
               DataColumn(
-                label: SizedBox(width: width * 0.2, child: const Text("Subject.")),
+                label: SizedBox(width: width * 0.1, child: const Text("Subject.")),
                 onSort: (columnIndex, ascending) {
-                  if (_tableSortIndex != columnIndex) {
-                    _tableSortIndex = 1;
-                    _isAscending = false;
-                  } else {
-                    _isAscending = !_isAscending;
-                  }
-
+                  _changeTableIndex(1);
                   samples = _isAscending ? SubjectData.sortBySubject(samples) : SubjectData.sortBySubject(samples).reversed.toList();
                   setState(() {});
                 },
               ),
-              DataColumn(label: SizedBox(width: width * 0.2, child: const Text("상태."))),
-              DataColumn(label: SizedBox(width: width * 0.2, child: const Text("Sync Status."))),
-              DataColumn(label: SizedBox(width: width * 0.15, child: const Text("Sex."))),
-              DataColumn(label: SizedBox(width: width * 0.15, child: const Text("Age."))),
+              DataColumn(
+                label: SizedBox(width: width * 0.2, child: const Text("상태.")),
+                onSort: (columnIndex, ascending) {
+                  _changeTableIndex(2);
+                  samples = _isAscending ? SubjectData.sortByStatus(samples) : SubjectData.sortByStatus(samples).reversed.toList();
+                  setState(() {});
+                },
+              ),
+              DataColumn(
+                label: SizedBox(width: width * 0.2, child: const Text("Sync Status.")),
+                onSort: (columnIndex, ascending) {
+                  _changeTableIndex(3);
+                  samples = _isAscending ? SubjectData.sortBySyncStatus(samples) : SubjectData.sortBySyncStatus(samples).reversed.toList();
+                  setState(() {});
+                },
+              ),
+              DataColumn(
+                label: SizedBox(width: width * 0.1, child: const Text("Sex.")),
+                onSort: (columnIndex, ascending) {
+                  _changeTableIndex(4);
+                  samples = _isAscending ? SubjectData.sortBySex(samples) : SubjectData.sortBySex(samples).reversed.toList();
+                  setState(() {});
+                },
+              ),
+              DataColumn(
+                label: SizedBox(width: width * 0.1, child: const Text("Age.")),
+                onSort: (columnIndex, ascending) {
+                  _changeTableIndex(5);
+                  samples = _isAscending ? SubjectData.sortByAge(samples) : SubjectData.sortByAge(samples).reversed.toList();
+                  setState(() {});
+                },
+              ),
             ],
             rows: samples.map((s) => s.toDataRow()).toList(),
           ),
@@ -138,6 +155,15 @@ class _BodyState extends State<Body> {
         ],
       ),
     );
+  }
+
+  void _changeTableIndex(int index) {
+    if (_tableSortIndex != index) {
+      _tableSortIndex = index;
+      _isAscending = true;
+    } else {
+      _isAscending = !_isAscending;
+    }
   }
 }
 
@@ -171,5 +197,3 @@ class Pagenation extends StatelessWidget {
     );
   }
 }
-
-const kTextPage = TextStyle(fontSize: 14);

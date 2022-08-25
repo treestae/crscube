@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:q4/subject_data.dart';
+import 'subject_data.dart';
 
 class CustomRadioTile<T> extends StatelessWidget {
   final T value;

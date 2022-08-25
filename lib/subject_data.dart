@@ -54,3 +54,4 @@ List<SubjectData> samples = [
 ];
 
 const kThemeColor = Color(0xff516ceb);
+const kTextPage = TextStyle(fontSize: 14);
