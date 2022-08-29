@@ -19,32 +19,32 @@ class SubjectData {
         DataCell(Text(age < 0 ? "-" : "$age")),
       ]);
 
-  static List<SubjectData> sortByNo(List<SubjectData> datas) {
-    return datas..sort((a, b) => a.no.compareTo(b.no));
+  static List<SubjectData> sortByNo(List<SubjectData> data) {
+    return data..sort((a, b) => a.no.compareTo(b.no));
   }
 
-  static List<SubjectData> sortBySubject(List<SubjectData> datas) {
-    return datas..sort((a, b) => int.parse(a.subject.substring(1)) - int.parse(b.subject.substring(1)));
+  static List<SubjectData> sortBySubject(List<SubjectData> data) {
+    return data..sort((a, b) => int.parse(a.subject.substring(1)).compareTo(int.parse(b.subject.substring(1))));
   }
 
-  static List<SubjectData> sortByStatus(List<SubjectData> datas) {
-    return datas..sort((a, b) => a.status.compareTo(b.status));
+  static List<SubjectData> sortByStatus(List<SubjectData> data) {
+    return data..sort((a, b) => a.status.compareTo(b.status));
   }
 
-  static List<SubjectData> sortBySyncStatus(List<SubjectData> datas) {
-    return datas..sort((a, b) => a.syncStatus.compareTo(b.syncStatus));
+  static List<SubjectData> sortBySyncStatus(List<SubjectData> data) {
+    return data..sort((a, b) => a.syncStatus.compareTo(b.syncStatus));
   }
 
-  static List<SubjectData> sortBySex(List<SubjectData> datas) {
-    return datas..sort((a, b) => a.sex.compareTo(b.sex));
+  static List<SubjectData> sortBySex(List<SubjectData> data) {
+    return data..sort((a, b) => a.sex.compareTo(b.sex));
   }
 
-  static List<SubjectData> sortByAge(List<SubjectData> datas) {
-    return datas..sort((a, b) => a.age.compareTo(b.age));
+  static List<SubjectData> sortByAge(List<SubjectData> data) {
+    return data..sort((a, b) => a.age.compareTo(b.age));
   }
 }
 
-List<SubjectData> samples = [
+List<SubjectData> rawData = [
   SubjectData(1, "S01001", "Screening", "Partially Done", "남"),
   SubjectData(2, "S01002", "Screening", "Partially Done", "남"),
   SubjectData(3, "S01003", "Complete", "Partially Done", "남"),

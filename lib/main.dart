@@ -41,8 +41,9 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   int _radioValue = 1;
-  int _tableSortIndex = 1;
-  bool _isAscending = false;
+  int _tableIndex = 0;
+  final List<bool> _isAscending = [false, false, false, false, false, false];
+  List<SubjectData> _samples = rawData.toList();
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,7 @@ class _BodyState extends State<Body> {
                   style: TextStyle(color: Colors.black),
                 ),
                 Text(
-                  "+${samples.length}",
+                  "+${_samples.length}",
                   style: const TextStyle(color: Colors.grey, fontSize: 15),
                 )
               ],
@@ -95,55 +96,91 @@ class _BodyState extends State<Body> {
             headingRowColor: MaterialStateProperty.resolveWith<Color?>((states) => Colors.grey[300]),
             columns: [
               DataColumn(
-                label: SizedBox(width: width * 0.1, child: const Text("No.")),
-                onSort: (columnIndex, ascending) {
-                  _changeTableIndex(0);
-                  samples = _isAscending ? SubjectData.sortByNo(samples) : SubjectData.sortByNo(samples).reversed.toList();
+                label: SizedBox(
+                    width: width * 0.1,
+                    child: Row(
+                      children: [
+                        const Text("No."),
+                        _getSortingIcon(0),
+                      ],
+                    )),
+                onSort: (index, _) {
+                  _samples = _getSortedSamples(index, SubjectData.sortByNo);
                   setState(() {});
                 },
               ),
               DataColumn(
-                label: SizedBox(width: width * 0.1, child: const Text("Subject.")),
-                onSort: (columnIndex, ascending) {
-                  _changeTableIndex(1);
-                  samples = _isAscending ? SubjectData.sortBySubject(samples) : SubjectData.sortBySubject(samples).reversed.toList();
+                label: SizedBox(
+                    width: width * 0.1,
+                    child: Row(
+                      children: [
+                        const Text("Subject."),
+                        _getSortingIcon(1),
+                      ],
+                    )),
+                onSort: (index, _) {
+                  _samples = _getSortedSamples(index, SubjectData.sortBySubject);
                   setState(() {});
                 },
               ),
               DataColumn(
-                label: SizedBox(width: width * 0.2, child: const Text("상태.")),
-                onSort: (columnIndex, ascending) {
-                  _changeTableIndex(2);
-                  samples = _isAscending ? SubjectData.sortByStatus(samples) : SubjectData.sortByStatus(samples).reversed.toList();
+                label: SizedBox(
+                    width: width * 0.2,
+                    child: Row(
+                      children: [
+                        const Text("상태."),
+                        _getSortingIcon(2),
+                      ],
+                    )),
+                onSort: (index, _) {
+                  _samples = _getSortedSamples(index, SubjectData.sortByStatus);
                   setState(() {});
                 },
               ),
               DataColumn(
-                label: SizedBox(width: width * 0.2, child: const Text("Sync Status.")),
-                onSort: (columnIndex, ascending) {
-                  _changeTableIndex(3);
-                  samples = _isAscending ? SubjectData.sortBySyncStatus(samples) : SubjectData.sortBySyncStatus(samples).reversed.toList();
+                label: SizedBox(
+                    width: width * 0.2,
+                    child: Row(
+                      children: [
+                        const Text("Sync Status."),
+                        _getSortingIcon(3),
+                      ],
+                    )),
+                onSort: (index, _) {
+                  _samples = _getSortedSamples(index, SubjectData.sortBySyncStatus);
                   setState(() {});
                 },
               ),
               DataColumn(
-                label: SizedBox(width: width * 0.1, child: const Text("Sex.")),
-                onSort: (columnIndex, ascending) {
-                  _changeTableIndex(4);
-                  samples = _isAscending ? SubjectData.sortBySex(samples) : SubjectData.sortBySex(samples).reversed.toList();
+                label: SizedBox(
+                    width: width * 0.1,
+                    child: Row(
+                      children: [
+                        const Text("Sex."),
+                        _getSortingIcon(4),
+                      ],
+                    )),
+                onSort: (index, _) {
+                  _samples = _getSortedSamples(index, SubjectData.sortBySex);
                   setState(() {});
                 },
               ),
               DataColumn(
-                label: SizedBox(width: width * 0.1, child: const Text("Age.")),
-                onSort: (columnIndex, ascending) {
-                  _changeTableIndex(5);
-                  samples = _isAscending ? SubjectData.sortByAge(samples) : SubjectData.sortByAge(samples).reversed.toList();
+                label: SizedBox(
+                    width: width * 0.1,
+                    child: Row(
+                      children: [
+                        const Text("Age."),
+                        _getSortingIcon(5),
+                      ],
+                    )),
+                onSort: (index, _) {
+                  _samples = _getSortedSamples(index, SubjectData.sortByAge);
                   setState(() {});
                 },
               ),
             ],
-            rows: samples.map((s) => s.toDataRow()).toList(),
+            rows: _samples.map((s) => s.toDataRow()).toList(),
           ),
           const Expanded(
             child: Align(
@@ -157,13 +194,18 @@ class _BodyState extends State<Body> {
     );
   }
 
-  void _changeTableIndex(int index) {
-    if (_tableSortIndex != index) {
-      _tableSortIndex = index;
-      _isAscending = true;
-    } else {
-      _isAscending = !_isAscending;
-    }
+  Widget _getSortingIcon(int index) {
+    return _tableIndex == index
+        ? _isAscending[_tableIndex]
+            ? Icon(Icons.arrow_upward)
+            : Icon(Icons.arrow_downward)
+        : SizedBox();
+  }
+
+  List<SubjectData> _getSortedSamples(int index, List<SubjectData> Function(List<SubjectData>) sortFunction) {
+    _tableIndex = index;
+    _isAscending[index] = !_isAscending[index];
+    return _isAscending[index] ? sortFunction(rawData) : sortFunction(rawData).reversed.toList();
   }
 }
 
