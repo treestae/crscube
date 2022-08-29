@@ -194,18 +194,20 @@ class _BodyState extends State<Body> {
     );
   }
 
+  /// 정렬 아이콘 위젯을 리턴한다.
   Widget _getSortingIcon(int index) {
     return _tableIndex == index
         ? _isAscending[_tableIndex]
-            ? Icon(Icons.arrow_upward)
-            : Icon(Icons.arrow_downward)
-        : SizedBox();
+            ? const Icon(Icons.arrow_downward)
+            : const Icon(Icons.arrow_upward)
+        : const SizedBox();
   }
 
+  /// 원본 데이터를 2번째 파라미터로 넘겨준 정렬함수로 정렬하여 리턴한다.
   List<SubjectData> _getSortedSamples(int index, List<SubjectData> Function(List<SubjectData>) sortFunction) {
     _tableIndex = index;
     _isAscending[index] = !_isAscending[index];
-    return _isAscending[index] ? sortFunction(rawData) : sortFunction(rawData).reversed.toList();
+    return _isAscending[index] ? sortFunction(rawData).reversed.toList() : sortFunction(rawData);
   }
 }
 
